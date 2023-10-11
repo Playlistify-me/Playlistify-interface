@@ -1,7 +1,6 @@
 import './globals.css'
 import type { Metadata } from 'next'
 import { Inter } from 'next/font/google'
-import 'bootstrap/dist/css/bootstrap.css'
 
 const inter = Inter({ subsets: ['latin'] })
 
@@ -18,8 +17,10 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body>
-        <main>
-          {children}
+        <main className='flex flex-col h-screen justify-center items-center bg-primary-black'>
+          <div className='p-1 px-3 w-relative h-relative self-center bg-primary-green rounded-lg'>
+              {children}
+          </div>
         </main>
       </body>
     </html>
