@@ -20,6 +20,5 @@ export default function Playlists() {
                 </tbody>
             </table>
         </div>
-
     )
 }
