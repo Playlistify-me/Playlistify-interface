@@ -5,6 +5,8 @@ import React from "react";
 import { SessionProvider } from "next-auth/react";
 import { useSession } from "next-auth/react";
 import { signIn, signOut } from "next-auth/react";
+import { Session } from "next-auth";
+import { getPlaylistsByUser, Token } from "./services/getPlaylists";
 
 export default function Home() {
   return (
@@ -15,6 +17,17 @@ export default function Home() {
       </div>
     </SessionProvider>
   );
+}
+
+function handleClick(s: Session) {
+  const token: Token = {
+    accessToken: s.accessToken!,
+    refreshToken: s.refreshToken!,
+  };
+
+  console.log(token);
+
+  // getPlaylistsByUser(token);
 }
 
 function Component() {
@@ -45,6 +58,16 @@ function Component() {
         <p>accessToken = {session.accessToken}</p>
         <br />
         <p>refreshToken = {session.refreshToken}</p>
+        <br />
+        <p>
+          get Playlists:{" "}
+          <button
+            className="border-solid border-2"
+            onClick={() => handleClick(session)}
+          >
+            GET PLAYLISTS
+          </button>
+        </p>
       </div>
     );
   }
