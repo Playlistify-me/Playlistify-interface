@@ -1,6 +1,9 @@
 import NextAuth from "next-auth";
 import SpotifyProvider from "next-auth/providers/spotify";
 
+const scopeHere: string =
+  "user-read-email user-read-private playlist-modify-public";
+
 const handler = NextAuth({
   providers: [
     SpotifyProvider({
@@ -10,13 +13,9 @@ const handler = NextAuth({
       clientSecret:
         process.env.SPOTIFY_CLIENT_SECRET ??
         "" /* or do this so it's empty if undefined*/,
-      /*
-      custom scope example: 
-      const scopeHere: string = "user-read-email user-read-private";
       authorization: {
-        params: {scopeHere}",
+        params: { scope: scopeHere },
       },
-      */
     }),
   ],
   callbacks: {

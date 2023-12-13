@@ -1,16 +1,23 @@
-import React from "react";
+import { Playlist } from "../playlists/playlistDto";
 
-const getPlaylistsEndpoint: string = "http://localhost:8080/playlists/me";
-
-function test(playlists: string[]): void {
-  //getPlaylistsByUser();
-  console.log(playlists);
-}
+const getPlaylistsEndpoint: string = "http://localhost:8080/playlist/me";
+const getPlaylistsEndpointTest: string =
+  "http://localhost:8080/playlist/metest";
 
 export type Token = {
   accessToken: string;
   refreshToken: string;
 };
+
+async function test(): Promise<void> {
+  const tokenToSend: Token = {
+    accessToken: "test",
+    refreshToken: "test",
+  };
+
+  const playlistItems = await getPlaylistsByUser(tokenToSend);
+  console.log(playlistItems);
+}
 
 export async function getPlaylistsByUser(tokens: Token) {
   console.log("tokens=");
@@ -33,6 +40,25 @@ export async function getPlaylistsByUser(tokens: Token) {
     console.log("responsedata");
     console.log(responseData);
   }
+  return responseData;
+}
+
+export async function getPlaylistsGetRequest(): Promise<Playlist[]> {
+  const response = await fetch(getPlaylistsEndpointTest);
+
+  if (!response.ok) {
+    throw new Error(`HTTP error! Status: ${response.status}`);
+  }
+
+  const responseData: Playlist[] = await response.json();
+
+  if (responseData) {
+    console.log("responsedata");
+    console.log(responseData);
+  } else {
+    console.log("no response data");
+  }
+
   return responseData;
 }
 
