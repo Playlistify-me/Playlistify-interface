@@ -2,7 +2,7 @@
 
 import { ChangeEvent, useEffect, useState } from "react";
 import { getPlaylistsGetRequest } from "../services/getPlaylists";
-import { Playlist } from "./playlistDto";
+import { SpotifyPlaylist } from "./playlistDto";
 import {
   MergePlaylistsRequest,
   mergePlaylists,
@@ -11,13 +11,15 @@ import { SessionProvider, useSession } from "next-auth/react";
 
 const Playlists = () => {
   const { data: session, status } = useSession();
-  const [playlists, setPlaylists] = useState<Playlist[]>([]);
-  const [selectedPlaylists, setSelectedPlaylists] = useState<Playlist[]>([]);
+  const [playlists, setPlaylists] = useState<SpotifyPlaylist[]>([]);
+  const [selectedPlaylists, setSelectedPlaylists] = useState<SpotifyPlaylist[]>(
+    []
+  );
   const [newPlaylistName, setNewPlaylistName] = useState<string>("");
 
   useEffect(() => {
     const fetchPlaylists = async () => {
-      const playlists: Playlist[] = await getPlaylistsGetRequest();
+      const playlists: SpotifyPlaylist[] = await getPlaylistsGetRequest();
       setPlaylists(playlists);
     };
 
@@ -46,7 +48,7 @@ const Playlists = () => {
 
   const handleCheckboxChange = (
     event: ChangeEvent<HTMLInputElement>,
-    playlist: Playlist
+    playlist: SpotifyPlaylist
   ): void => {
     if (event.target.checked) {
       setSelectedPlaylists([...selectedPlaylists, playlist]);
