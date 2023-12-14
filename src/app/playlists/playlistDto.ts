@@ -1,24 +1,24 @@
-type Image = {
+export type SpotifyImage = {
   height: number;
   url: string;
   width: number;
 };
 
-type ExternalUrls = {
+export type SpotifyExternalUrls = {
   spotify: string;
 };
 
-type Owner = {
-  birthdate: null;
-  country: null;
-  displayName: string;
-  email: null;
-  externalUrls: ExternalUrls;
-  followers: null;
+export type SpotifyOwner = {
+  birthdate: string | null;
+  country: string | null;
+  displayName: string | null;
+  email: string | null;
+  externalUrls: SpotifyExternalUrls;
+  followers: any;
   href: string;
   id: string;
-  images: null;
-  product: null;
+  images: any;
+  product: string | null;
   type: string;
   uri: string;
 };
@@ -29,12 +29,12 @@ type Tracks = {
 };
 
 export type Playlist = {
-  externalUrls: ExternalUrls;
+  externalUrls: SpotifyExternalUrls;
   href: string;
   id: string;
-  images: Image[];
+  images: SpotifyImage[];
   name: string;
-  owner: Owner;
+  owner: SpotifyOwner;
   snapshotId: string;
   tracks: Tracks;
   type: string;

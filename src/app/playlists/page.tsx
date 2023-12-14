@@ -65,7 +65,6 @@ const Playlists = () => {
     );
 
     if (playlistIds.length === 0) {
-      // messagebox no ids?, shouldnt be happening any more anyways
       return;
     }
 
@@ -81,8 +80,6 @@ const Playlists = () => {
       newPlaylistName: newPlaylistName,
       accessToken: session?.accessToken!,
     };
-
-    console.log(mergePlaylistsRequest);
 
     mergePlaylists(mergePlaylistsRequest);
 

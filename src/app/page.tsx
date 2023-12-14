@@ -9,21 +9,19 @@ import { Session } from "next-auth";
 import {
   getPlaylistsByUser,
   getPlaylistsGetRequest,
-  Token,
 } from "./services/getPlaylists";
 import { Playlist } from "./playlists/playlistDto";
-import { redirect } from "next/dist/server/api-utils";
-import Playlists from "./playlists/page";
 import {
   mergePlaylists,
   MergePlaylistsRequest,
 } from "./services/mergePlaylists";
+import { Token } from "./services/fetchRequest";
 
 export default function Home() {
   return (
     <SessionProvider>
       <div>
-        <Component />
+        <MainPage />
       </div>
     </SessionProvider>
   );
@@ -35,10 +33,9 @@ async function handleClick(s: Session) {
     refreshToken: s.refreshToken!,
   };
 
-  console.log(token);
-
   const data: Playlist[] = await getPlaylistsByUser(token);
   console.log("data:");
+  console.log(data);
 }
 
 async function handleClickTest(s: Session) {
@@ -68,13 +65,10 @@ async function handleMergeTest(s: Session) {
     accessToken: token.accessToken,
   };
 
-  console.log("req:");
-  console.log(req);
-
   await mergePlaylists(req);
 }
 
-function Component() {
+function MainPage() {
   const { data: session, status } = useSession();
 
   if (status === "authenticated") {
