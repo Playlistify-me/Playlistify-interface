@@ -10,12 +10,16 @@ import {
   getPlaylistsByUser,
   getPlaylistsGetRequest,
 } from "./services/getPlaylists";
-import { Playlist } from "./playlists/playlistDto";
+import { SpotifyPlaylist } from "./playlists/playlistDto";
 import {
   mergePlaylists,
   MergePlaylistsRequest,
 } from "./services/mergePlaylists";
 import { Token } from "./services/fetchRequest";
+import {
+  getTracksByPlaylistId,
+  getTracksByPlaylistIds,
+} from "./services/getTracks";
 
 export default function Home() {
   return (
@@ -33,7 +37,7 @@ async function handleClick(s: Session) {
     refreshToken: s.refreshToken!,
   };
 
-  const data: Playlist[] = await getPlaylistsByUser(token);
+  const data: SpotifyPlaylist[] = await getPlaylistsByUser(token);
   console.log("data:");
   console.log(data);
 }
@@ -44,7 +48,7 @@ async function handleClickTest(s: Session) {
     refreshToken: s.refreshToken!,
   };
 
-  const playlists: Playlist[] = await getPlaylistsGetRequest();
+  const playlists: SpotifyPlaylist[] = await getPlaylistsGetRequest();
   console.log("data:");
   console.log(playlists);
 }
@@ -72,15 +76,19 @@ function MainPage() {
   const { data: session, status } = useSession();
 
   if (status === "authenticated") {
-    console.log("session:");
-    console.log(session);
+    const playlistIds: string[] = [
+      "1cW5RKqMRo7da0E9NUTwZu",
+      "6WLWfFGTfVQjiZ4MKAzCeD",
+    ];
 
     return (
       <div>
-        <p>
+        <p className="my-2">
           Signed in as {session.user?.email}
           <br />
           Welcome {session.user?.name}
+        </p>
+        <p>
           <Image
             src={session.user?.image!}
             alt="current_user_profile_picture"
@@ -95,32 +103,44 @@ function MainPage() {
             Sign out
           </button>
         </p>
-        <br />
         <p>
-          GET PLAYLISTS:
           <button
-            className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
+            className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded m-1"
             onClick={() => handleClick(session)}
           >
-            GET PLAYLISTS W TOKEN
+            Get Playlist with Token
           </button>
         </p>
         <p>
-          TEST RESPONSE:
           <button
-            className="bg-blue-500 hover:bg-blue-500/90 text-white font-bold py-2 px-4 rounded m-2"
+            className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded m-1"
             onClick={() => handleClickTest(session)}
           >
-            TEST REQUEST
+            Test Request
           </button>
         </p>
         <p>
-          TEST MERGE:{" "}
           <button
-            className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
+            className="bg-blue-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded m-1"
             onClick={() => handleMergeTest(session)}
           >
-            TEST MERGE
+            Test Merge (CAUTION)
+          </button>
+        </p>
+        <p>
+          <button
+            className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded m-1"
+            onClick={() => getTracksByPlaylistId(playlistIds[0])}
+          >
+            Get Tracks for Single Track
+          </button>
+        </p>
+        <p>
+          <button
+            className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded m-1"
+            onClick={() => getTracksByPlaylistIds(playlistIds)}
+          >
+            Get Tracks for Multiple Tracks
           </button>
         </p>
       </div>
@@ -129,7 +149,7 @@ function MainPage() {
 
   return (
     <button
-      className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded justify-center"
+      className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded justify-center m-2"
       onClick={() => signIn()}
     >
       Sign in
